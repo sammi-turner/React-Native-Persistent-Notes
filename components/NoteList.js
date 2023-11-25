@@ -1,15 +1,20 @@
+
 import React from 'react';
 import { View, Text, Button, FlatList, StyleSheet } from 'react-native';
 
-const NoteList = ({ tasks, deleteNote, isDarkMode }) => (
+const NoteList = ({ tasks, deleteNote, startEditing, isDarkMode }) => (
   <FlatList
     data={tasks}
     renderItem={({ item }) => (
       <View style={isDarkMode ? styles.listItemDark : styles.listItem}>
         <Text style={isDarkMode ? styles.itemTextDark : styles.itemText}>{item.value}</Text>
-        <Button onPress={() => deleteNote(item.key)} title="x" />
+        <View style={styles.buttonContainer}>
+          <Button onPress={() => deleteNote(item.key)} title="x" />
+          <Button onPress={() => startEditing(item)} title="edit" />
+        </View>
       </View>
     )}
+    keyExtractor={item => item.key}
   />
 );
 
@@ -39,6 +44,11 @@ const styles = StyleSheet.create({
   itemTextDark: {
     fontSize: 20,
     color: '#fff',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });
 

@@ -1,19 +1,26 @@
 import React from 'react';
 import { TextInput, Button, StyleSheet } from 'react-native';
 
-const NoteInput = ({ text, setText, addNote, isDarkMode }) => (
-  <>
-    <TextInput
-      style={isDarkMode ? styles.inputDark : styles.input}
-      onChangeText={setText}
-      value={text}
-    />
-    <Button
-      onPress={addNote}
-      title="ADD"
-    />
-  </>
-);
+const NoteInput = ({ text, setText, addNote, setEditingNote, isDarkMode }) => {
+  const handleButtonPress = () => {
+    addNote();
+    setEditingNote(null);
+  };
+
+  return (
+    <>
+      <TextInput
+        style={isDarkMode ? styles.inputDark : styles.input}
+        onChangeText={setText}
+        value={text}
+      />
+      <Button
+        onPress={handleButtonPress}
+        title="ADD"
+      />
+    </>
+  );
+};
 
 const styles = StyleSheet.create({
   input: {

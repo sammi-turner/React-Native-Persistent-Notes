@@ -8,6 +8,7 @@ import NoteList from './components/NoteList';
 const App = () => {
   const [tasks, setTasks] = useState([]);
   const [text, setText] = useState('');
+  const [editingNote, setEditingNote] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
@@ -24,7 +25,7 @@ const App = () => {
 
   const addNote = async () => {
     try {
-      const newTasks = [...tasks, { key: Date.now().toString(), value: text }];
+      const newTasks = editingNote ? tasks.map(t => t.key === editingNote.key ? { ...t, value: text } : t) : [...tasks, { key: Date.now().toString(), value: text }];
       setTasks(newTasks);
       const jsonValue = JSON.stringify(newTasks);
       await AsyncStorage.setItem('@tasks', jsonValue);
@@ -34,7 +35,13 @@ const App = () => {
     }
   };
 
-  const deleteNote = async (key) => {
+  
+  const startEditing = (note) => {
+    setEditingNote(note);
+    setText(note.value);
+  };
+
+const deleteNote = async (key) => {
     try {
       const newTasks = tasks.filter(task => task.key !== key);
       setTasks(newTasks);
@@ -50,8 +57,8 @@ const App = () => {
       <View style={styles.innerContainer}>
         <StatusBar style="auto" />
         <Header isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
-        <NoteInput text={text} setText={setText} addNote={addNote} isDarkMode={isDarkMode} />
-        <NoteList tasks={tasks} deleteNote={deleteNote} isDarkMode={isDarkMode} />
+        <NoteInput text={text} setText={setText} addNote={addNote} setEditingNote={setEditingNote} isDarkMode={isDarkMode} />
+        <NoteList tasks={tasks} deleteNote={deleteNote} startEditing={startEditing} isDarkMode={isDarkMode} />
       </View>
     </SafeAreaView>
   );
