@@ -1,7 +1,9 @@
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView, StyleSheet, View, FlatList, TextInput, Button, TouchableOpacity, Text, Switch } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useEffect } from 'react';
+import { SafeAreaView, View, StyleSheet, StatusBar } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Header from './components/Header';
+import NoteInput from './components/NoteInput';
+import NoteList from './components/NoteList';
 
 const App = () => {
   const [tasks, setTasks] = useState([]);
@@ -46,35 +48,10 @@ const App = () => {
   return (
     <SafeAreaView style={isDarkMode ? styles.containerDark : styles.container}>
       <View style={styles.innerContainer}>
-        <View style={styles.header}>
-          <Text style={isDarkMode ? styles.headerTextDark : styles.headerText}>Persistent Notes</Text>
-          <Switch
-            value={isDarkMode}
-            onValueChange={setIsDarkMode}
-          />
-        </View>
-        <TextInput
-          style={isDarkMode ? styles.inputDark : styles.input}
-          onChangeText={setText}
-          value={text}
-        />
-        <Button style={isDarkMode ? styles.addButtonDark : styles.addButton}
-          onPress={addNote}
-          title="ADD"
-        />
-        <FlatList
-          data={tasks}
-          renderItem={({ item }) => (
-            <View style={isDarkMode ? styles.listItemDark : styles.listItem}>
-              <Text style={isDarkMode ? styles.itemTextDark : styles.itemText}>{item.value}</Text>
-              <Button
-                onPress={() => deleteNote(item.key)}
-                title="x"
-              />
-            </View>
-          )}
-        />
         <StatusBar style="auto" />
+        <Header isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
+        <NoteInput text={text} setText={setText} addNote={addNote} isDarkMode={isDarkMode} />
+        <NoteList tasks={tasks} deleteNote={deleteNote} isDarkMode={isDarkMode} />
       </View>
     </SafeAreaView>
   );
@@ -94,77 +71,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#484b6a',
     paddingHorizontal: 10,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 5,
-  },
-  headerText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#484b6a',
-  },
-  headerTextDark: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#e4e5f1',
-  },
-  input: {
-    height: 60,
-    borderWidth: 1,
-    padding: 10,
-    borderRadius: 20,
-    backgroundColor: '#e4e5f1',
-    color: '#484b6a',
-    marginVertical: 10,
-  },
-  inputDark: {
-    height: 60,
-    borderWidth: 1,
-    borderColor: '#e4e5f1',
-    padding: 10,
-    borderRadius: 20,
-    backgroundColor: '#484b6a',
-    color: '#e4e5f1',
-    marginVertical: 10,
-  },
-  listItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#d2d3db',
-    padding: 15,
-    borderRadius: 20,
-    marginVertical: 8,
-  },
-  listItemDark: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#d2d3db',
-    padding: 15,
-    borderRadius: 20,
-    marginVertical: 8,
-  },
-  itemText: {
-    fontSize: 20,
-    color: '#111',
-  },
-  itemTextDark: {
-    fontSize: 20,
-    color: '#111',
-  },
-  addButton: {
-    padding: 10,
-    borderRadius: 20,
-    color: '#484b6a',
-  },
-  addButtonDark: {
-    padding: 10,
-    borderRadius: 20,
-    color: '#e4e5f1',
   },
 });
 
