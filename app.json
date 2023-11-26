@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "persistent_notes",
-    "slug": "persistent_notes",
+    "name": "Persistent Notes",
+    "slug": "persistent-notes",
+    "description": "A minimalist notes app.",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -25,6 +26,17 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "d2ebb1c4-6311-48d1-8c49-b049469f734e"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/d2ebb1c4-6311-48d1-8c49-b049469f734e"
     }
   }
 }
